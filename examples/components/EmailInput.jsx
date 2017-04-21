@@ -10,7 +10,7 @@ class EmailInput extends Component {
 
   componentWillMount() {
   	console.log('EmailInput props: ', this.props)
-    this.props.addNewField('email', builtinValidators.isEmail('a valid email address should look like i.e name@example.com'), {required: true, msg: 'email should not be empty'});
+    this.props.addNewField('email', this.props.defaultValue, builtinValidators.isEmail('a valid email address should look like i.e name@example.com'), {required: true, msg: 'email should not be empty'});
   }
 
   render() {

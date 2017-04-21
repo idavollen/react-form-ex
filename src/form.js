@@ -9,6 +9,7 @@ export default class FormProvider extends Component {
   constructor(props, context) {
     super(props, context);
     this.validators = createValidators(props.validators);
+    this.options = { stopOnErr: true, ...props.options } // stop-validating-on-error
     this.fields = Object.keys(props.validators);
     this.state = this._initState();
     this._initCallbacks();
@@ -35,16 +36,26 @@ export default class FormProvider extends Component {
 
   _initCallbacks() {
     var cbs = {}
+    const getFormData =  (...fields) => {
+      let formdata = {};
+      fields = !fields || fields.length === 0? this.fields : fields;
+      fields.forEach( field => {
+        formdata[field] = this.state[field] ? this.state[field].value : '';
+      })
+      return formdata;
+    }
+
     const cb = field => (value, validate = true) => {
-      let msg = validate && this.validators.validateField(field, value) || undefined;
+      let msg = validate && this.validators.validateField(field, value, getFormData(), this.options.stopOnErr) || undefined;
       let fieldState = {};
-      fieldState[field] = { value: value, msg: msg }
+      fieldState[field] = { value, msg }
       if (!this.isInited) {
         this.setState(function(previousState, currentProps) {
           return {...previousState, ...fieldState};
         })
-      } else
-      this.setState({ ...this.state, ...fieldState })
+      } else {
+        this.setState({ ...this.state, ...fieldState })
+      }
     }
     // add new validators on top of existing ones
     const addValidator = field => (...validators) => {
@@ -59,11 +70,11 @@ export default class FormProvider extends Component {
       }
     });
     cbs.validateForm = (...fields) => {
-      let formdata = {}, fieldState = {}, err=[];
+      let formdata = getFormData(fields), fieldState = {}, err=[];
       fields = !fields || fields.length === 0? this.fields : fields;
       fields.forEach( field => {
         let fieldVal = this.state[field] ? this.state[field].value : '';
-        let msg = this.validators.validateField(field, fieldVal);
+        let msg = this.validators.validateField(field, fieldVal, formdata, this.options.stopOnErr);
         msg && err.push(msg)
         fieldState[field] = { value: fieldVal, msg }
       })
@@ -88,22 +99,18 @@ export default class FormProvider extends Component {
         this.setState({ ...this.state, ...fieldState })
       }
     }
-    cbs.formData = (...fields) => {
-      let formdata = {};
-      fields = !fields || fields.length === 0? this.fields : fields;
-      fields.forEach( field => {
-        formdata[field] = this.state[field] ? this.state[field].value : '';
-      })
-      return formdata;
-    }
+    cbs.formData = getFormData
     
     this.cbs = cbs;
   }
+
+  
 
   getProps() {
     var props = {}
     this.fields.forEach( field => {
       props[field] = Object.assign({}, this.cbs[field], {
+        value: this.state[field].value || '',
         valid: this.state[field].msg === undefined,
         invalid: this.state[field].msg !== undefined,
         msg: this.state[field].msg

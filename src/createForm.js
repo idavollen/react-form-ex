@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactForm from './form';
 
-export default function createForm(validatorConfigs) {
-  return Form => (
-	  <ReactForm validators={ validatorConfigs } >
-	    <Form />
-	  </ReactForm>
-  );
-}
+const createForm = (validatorConfigs, options={}) => Form => (
+  <ReactForm validators={ validatorConfigs } options={ options } >
+    <Form />
+  </ReactForm>
+);
+
+export default createForm

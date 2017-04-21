@@ -3,15 +3,21 @@ import TextInput from './TextInput'
 import EmailInput from './EmailInput'
 import IncomeInput from './IncomeInput'
 
-const ContactForm = ({validateForm, addNewField, ...props}) => {
+const ContactForm = ({validateForm, formData, addNewField, ...props}) => {
 console.log('ContactForm:', validateForm, addNewField, ...props)
   return (
     <form>
-      <TextInput name="fullname" {...props.fullname } />
-      <TextInput name="age" { ...props.age } />
+      <TextInput name="fullname" {...props.fullname } defaultValue="sam d. lee" />
+      <TextInput name="fullname2" {...props.fullname2 }  />
+      <TextInput name="age" { ...props.age } defaultValue="38" />
       <IncomeInput name="income"  {...props.income } />
-      <EmailInput name="email" addNewField={ addNewField } { ...props.email }  />
-      <input type="submit" onClick={ e=> { if (validateForm()) { console.log('EEEEEEEroor'); e.preventDefault(); }}} />
+      <EmailInput name="email" addNewField={ addNewField } { ...props.email } defaultValue="sam@lee.no" />
+      <input type="submit" onClick={ e=> { 
+      	console.log('formData = ', formData(), 'partial formData = ', formData('fullname', 'email'))
+      	let ret = validateForm();
+      	if (ret) { console.log('EEEEEEEroor:', ret); e.preventDefault(); }
+      	else { console.log('validateForm is OK')}
+      }} />
     </form>
   )
 };
