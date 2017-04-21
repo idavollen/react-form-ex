@@ -1,28 +1,16 @@
 {
-  "name": "react-form-ex",
-  "version": "1.0.0",
-  "description": "a simple react-form that uses simple-form-validator for validating form fields",
-  "main": "./lib/index.js",
+  "name": "react-form-example",
+  "version": "1.0.3",
+  "description": "a simple react form that demonstrates how to use react-form-ex together with simple-form-validator",
+  "main": "index.js",
   "scripts": {
-    "build:lib": "babel src --out-dir lib",
-    "build:umd": "cross-env NODE_ENV=development webpack src/index.js dist/react-form-ex.js",
-    "build:umd:min": "cross-env NODE_ENV=production webpack src/index.js dist/react-form-ex.min.js",
-    "build": "npm run build:lib && npm run build:umd && npm run build:umd:min && node ./prepublish",
-    "clean": "rimraf lib dist coverage",
     "lint": "eslint src test",
-    "prepublish": "npm run clean && npm run build",
-    "test": "mocha --compilers js:babel-register --recursive ",
-    "test:watch": "npm test -- --watch",
-    "test:cov": "babel-node ./node_modules/isparta/bin/isparta cover ./node_modules/mocha/bin/_mocha -- --recursive"
+    "server": "node server.js"
   },
   "repository": {},
-  "files": [
-    "src"
-  ],
   "keywords": [
     "validator",
     "form",
-    "form provider",
     "react"
   ],
   "author": "sam",
@@ -37,23 +25,28 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-2": "^6.3.13",
     "babel-register": "^6.3.13",
+    "body-parser": "^1.15.0",
     "cross-env": "^1.0.7",
+    "css-loader": "~0.23.1",
     "es3ify": "^0.2.0",
     "eslint": "^1.7.1",
     "expect": "^1.8.0",
+    "express": "^4.13.3",
     "glob": "^6.0.4",
-    "isparta": "4.0.0",
-    "istanbul": "^0.3.17",
-    "jsdom": "~8.1.0",
-    "mocha": "^2.4.5",
-    "chai": "^3.5.0",
-    "rimraf": "^2.3.4",
-    "webpack": "^1.11.0"
+    "ignore-styles": "^1.2.0",
+    "less": "~2.6.1",
+    "less-loader": "~2.2.3",
+    "style-loader": "~0.13.1",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.9.11",
+    "webpack-dev-middleware": "^1.2.0",
+    "webpack-hot-middleware": "^2.2.0"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^15.0.1",
-    "react-dom": "^15.0.0",
-    "simple-form-validator": "^1.0.4"
+    "react-dom": "^15.0.1",
+    "simple-form-validator": "^1.0.8"
   },
   "browserify": {
     "transform": [
