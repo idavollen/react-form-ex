@@ -60,9 +60,9 @@ In both cases mentioned above, the FormProvider, as a container component, passe
     const ContactForm = ({validateForm, formData, addNewField, ...props}) => {
 		  return (
 		    <form>
-		      <TextInput name="fullname" {...props.fullname } />
+		      <TextInput name="fullname" { ...props.fullname } />
 		      <TextInput name="age" { ...props.age } />
-		      <IncomeInput name="income"  {...props.income } />
+		      <IncomeInput name="income"  { ...props.income } />
 		      <EmailInput name="email" addNewField={ addNewField } { ...props.email }  />
 		      <input type="submit" onClick={ e=> { 
 			      		let errMsgs = validateForm()
@@ -97,7 +97,7 @@ In both cases mentioned above, the FormProvider, as a container component, passe
 
 		  render() {
 		  	return (
-			    <TextInput {... this.props} />
+			    <TextInput { ...this.props } />
 			  )	
 		  }		  
 		};
@@ -106,13 +106,14 @@ In both cases mentioned above, the FormProvider, as a container component, passe
   ```
 
 - [ **...props** ] *props* is a complex object and contains callbacks and properties for each form field. Take *props.age* for example:
-	1. **name** 				the field name
+	0. **name** 				the field name
+	1. **value** 				the current value
 	2. **valid** 				flag, true means no validating error
-	3. **invalid**			flag, true menas existence of validating error
+	3. **invalid**				flag, true menas existence of validating error
 	4. **msg**					array of strings, validating error messages
-	5. **onChange**			callback, it can be used to validate this field while *typing*
+	5. **onChange**				callback, it can be used to validate this field while *typing*
 	6. **onBlur**				callback, it can be used to validate this field after *focusing out*
-	7. **addValidator** callback, called to add new validators to this field	**(2)**
+	7. **addValidator** 		callback, called to add new validators to this field	**(2)**
 
 - [ **support of defaultValue** ] If a form field has a default value, it is sent as property *defaultValue* for react component. In order to reflect the default value to *FormProvider* so that the later *formData* call can be able to retrive those default values, *onChange* should be called i.e. in method *componentDidMount*. Take a react component TextInput for instance:
 	```javascript
@@ -135,9 +136,8 @@ In both cases mentioned above, the FormProvider, as a container component, passe
 
 			render() {
 				const { name, onChange, onBlur, valid, invalid, msg, placeholder, label, type, defaultValue, enableChange } = this.props
-				//console.log('TextInput props:', name, onChange, onBlur, valid, invalid, msg)
 				let helpTxt = label || name
-				let inputClz = classNames('form-control', {'validate-err': invalid}, {'validate-ok': valid})
+				let inputClz = classNames('form-control', {'validate-err': invalid}, { 'validate-ok': valid })
 			  return <div className="input-line form-group">
 		    	<label>{ helpTxt }</label>
 		      <input  name={name}  onBlur={ e =>{ onBlur(e.target.value) } } onChange={ e=>{ enableChange && onChange(e.target.value)} } className={ inputClz } placeholder={ placeholder? placeholder : '' } type={ type || 'text' } autoComplete={ type === 'password'? 'off' : 'on'} defaultValue={ defaultValue } />
