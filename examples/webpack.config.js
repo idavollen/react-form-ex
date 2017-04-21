@@ -1,53 +1,35 @@
-'use strict'
-
+var path = require('path')
 var webpack = require('webpack')
-var env = process.env.NODE_ENV
 
-var config = {
+module.exports = {
+  devtool: 'cheap-module-eval-source-map',
+  entry: [
+    'babel-polyfill',
+    'webpack-hot-middleware/client',
+    path.join(__dirname, 'index')
+  ],
   resolve: {
     extensions: ['', '.js', '.jsx']
   },
-  module: {
-    loaders: [
-      { 
-        test: /\.js(x?)$/, 
-        loaders: ['babel-loader'],
-        exclude: /node_modules/ 
-      }
-    ]
-  },
   output: {
-    library: 'react-form',
-    libraryTarget: 'umd'
+    path: path.join(__dirname, 'dist'),
+    filename: 'bundle.js',
+    publicPath: '/static/'
   },
   plugins: [
-    {
-      apply: function apply(compiler) {
-        compiler.parser.plugin('expression global', function expressionGlobalPlugin() {
-          this.state.module.addVariable('global', "(function() { return this; }()) || Function('return this')()")
-          return false
-        })
-      }
-    },
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(env)
-    })
-  ]
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ],
+  module: {
+    loaders: [{
+      test: /\.js(x?)$/,
+      loaders: [ 'babel-loader' ],
+      exclude: /node_modules/,
+      include: __dirname
+    }, {
+      test: /\.less$/,
+      loader: "style!css!less"
+    }]
+  }
 }
-
-if (env === 'production') {
-  config.plugins.push(
-    new webpack.optimize.UglifyJsPlugin({
-      compressor: {
-        pure_getters: true,
-        unsafe: true,
-        unsafe_comps: true,
-        screw_ie8: true,
-        warnings: false
-      }
-    })
-  )
-}
-
-module.exports = config
