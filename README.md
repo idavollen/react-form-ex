@@ -106,14 +106,14 @@ In both cases mentioned above, the FormProvider, as a container component, passe
   ```
 
 - [ **...props** ] *props* is a complex object and contains callbacks and properties for each form field. Take *props.age* for example:
-	0. **name** 				the field name
-	1. **value** 				the current value
-	2. **valid** 				flag, true means no validating error
-	3. **invalid**				flag, true menas existence of validating error
-	4. **msg**					array of strings, validating error messages
-	5. **onChange**				callback, it can be used to validate this field while *typing*
-	6. **onBlur**				callback, it can be used to validate this field after *focusing out*
-	7. **addValidator** 		callback, called to add new validators to this field	**(2)**
+	1. **name** 				the field name
+	2. **value** 				the current value
+	3. **valid** 				flag, true means no validating error
+	4. **invalid**				flag, true menas existence of validating error
+	5. **msg**					array of strings, validating error messages
+	6. **onChange**				callback, it can be used to validate this field while *typing*
+	7. **onBlur**				callback, it can be used to validate this field after *focusing out*
+	8. **addValidator** 		callback, called to add new validators to this field	**(2)**
 
 - [ **support of defaultValue** ] If a form field has a default value, it is sent as property *defaultValue* for react component. In order to reflect the default value to *FormProvider* so that the later *formData* call can be able to retrive those default values, *onChange* should be called i.e. in method *componentDidMount*. Take a react component TextInput for instance:
 	```javascript
