@@ -70,7 +70,7 @@ export default class FormProvider extends Component {
       }
     });
     cbs.validateForm = (...fields) => {
-      let formdata = getFormData(fields), fieldState = {}, err=[];
+      let formdata = getFormData(...fields), fieldState = {}, err=[];
       fields = !fields || fields.length === 0? this.fields : fields;
       fields.forEach( field => {
         let fieldVal = this.state[field] ? this.state[field].value : '';
