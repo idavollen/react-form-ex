@@ -9,7 +9,10 @@ export default class FormProvider extends Component {
   constructor(props, context) {
     super(props, context);
     this.validators = createValidators(props.validators);
-    this.options = { stopOnErr: true, ...props.options } // stop-validating-on-error
+    // stop-validating-on-error, which means no validating any more after the first validating error rises up
+    // implicitRequired, by default true, all validators exception isRequired doesn't require an defined, valid value before validating
+    // if implicitRequired is set false, it can be useful in scenario where a field is mandatory, but it has validator and the validator will take effect only when the field has a value
+    this.options = { stopOnErr: true, implicitRequired: true, ...props.options } 
     this.fields = Object.keys(props.validators);
     this.state = this._initState();
     this._initCallbacks();
@@ -45,8 +48,8 @@ export default class FormProvider extends Component {
       return formdata;
     }
 
-    const cb = field => (value, validate = true) => {
-      let msg = validate && this.validators.validateField(field, value, getFormData(), this.options.stopOnErr) || undefined;
+    const validateField = field => (value, validate = true) => {
+      let msg = validate && this.validators.validateField(field, value, { ...this.options, contextFields: getFormData() }) || undefined;
       let fieldState = {};
       fieldState[field] = { value, msg }
       if (!this.isInited) {
@@ -57,6 +60,7 @@ export default class FormProvider extends Component {
         this.setState({ ...this.state, ...fieldState })
       }
     }
+
     // add new validators on top of existing ones
     const addValidator = field => (...validators) => {
       this.validators.addValidator(field, ...validators);
@@ -64,31 +68,33 @@ export default class FormProvider extends Component {
 
     this.fields.forEach( field => {
       cbs[field] = {
-        onChange: cb(field),
-        onBlur: cb(field),
+        onChange: validateField(field),
+        onBlur: validateField(field),
         addValidator: addValidator(field)
       }
     });
+
     cbs.validateForm = (...fields) => {
       let formdata = getFormData(...fields), fieldState = {}, err=[];
       fields = !fields || fields.length === 0? this.fields : fields;
       fields.forEach( field => {
         let fieldVal = this.state[field] ? this.state[field].value : '';
-        let msg = this.validators.validateField(field, fieldVal, formdata, this.options.stopOnErr);
+        let msg = this.validators.validateField(field, fieldVal, { ...this.options, contextFields: formdata });
         msg && err.push(msg)
         fieldState[field] = { value: fieldVal, msg }
       })
       this.setState({ ...this.state, ...fieldState });
       return err.length > 0? err : null
     }
+
     // add validators for a new form field, that is, there exists no validators for this field
     cbs.addNewField = (field, defValue, ...validators) => {
       if (!this.fields.includes(field)) {
         this.fields.push(field);
         addValidator(field)(...validators);
         cbs[field] = {
-          onChange: cb(field),
-          onBlur: cb(field),
+          onChange: validateField(field),
+          onBlur: validateField(field),
           addValidator: addValidator(field)
         }  
         let fieldState = {};

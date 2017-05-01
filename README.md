@@ -17,7 +17,14 @@ This assumes that you’re using [npm](http://npmjs.com/) package manager with a
 
 
 ## Documentation
-There are two ways to utilize react-form-ex with your form compnent
+There are two ways to utilize react-form-ex with your form compnent, **FormProvider** or **createForm**. In both cases, you speciffy a collection of validators, together with an optional options that determine validation behavour. For the time being, there are two valid options available *stopOnErr*, by default, it's **_TRUE_**, *implicitRequired*, by default it's  **_TRUE_**
+	
+	@field stopOnErr            flag designating if the validating process should stop when the first validating error appears
+	@field implicityRequired    flag designating if a field is mandatory if a validator is provided
+
+	implicitRequired is set TRUE by default, which means that as long as a form filed is provided with validators, it is considered as a mandatory field implicityly. If it is set as FALSE, all mandatory form fields SHOULD be explicitly provided a isRequired validator together with other validators. Otherwise all validators associated with a form field won't be validated  until this form field is typed a value
+  	
+
 1. [**FormProvider**] The React container component, *FormProvider* wraps your form component
   ```javascript
 		const ContactApp = () => {
@@ -30,7 +37,7 @@ There are two ways to utilize react-form-ex with your form compnent
 		  return (
 		    <section><h3>Kontakt oss</h3>
 		      Vennligst oppfyll Kontaktskjemaet under og vi skal kontakte deg så snart som mulig
-		      <FormProvider validators={validators} >
+		      <FormProvider validators={validators} options={ { stopOnErr: true, implicitRequired: false } } >
 		        <ContactForm />
 		      </FormProvider>
 		    </section>
@@ -46,7 +53,7 @@ There are two ways to utilize react-form-ex with your form compnent
 		    'age': [Validators.isNumber('age should be only digits'), Validators.range('age should be between 1 and 150', 1, 150)],
 		    'income': [Validators.isNumber('income should be digits')]
 		  }
-		  const form = createForm(validators)(ContactForm);
+		  const form = createForm(validators, { stopOnErr: true, implicitRequired: false })(ContactForm);
 		  return (
 		    <section><h3>Kontakt oss</h3>
 		      { form }
