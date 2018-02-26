@@ -1,6 +1,6 @@
 {
   "name": "react-form-ex",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "a simple react-form that uses simple-form-validator for validating form fields",
   "main": "./lib/index.js",
   "scripts": {

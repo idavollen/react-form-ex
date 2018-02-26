@@ -12,10 +12,25 @@ export default class FormProvider extends Component {
     // stop-validating-on-error, which means no validating any more after the first validating error rises up
     // implicitRequired, by default true, all validators exception isRequired doesn't require an defined, valid value before validating
     // if implicitRequired is set false, it can be useful in scenario where a field is mandatory, but it has validator and the validator will take effect only when the field has a value
-    this.options = { stopOnErr: true, implicitRequired: true, ...props.options } 
+    this.options = { stopOnErr: true, implicitRequired: true, ...props.options }
     this.fields = Object.keys(props.validators);
     this.state = this._initState();
     this._initCallbacks();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.lang != nextProps.lang) {
+      this.validators = createValidators(nextProps.validators);
+      this.setState(this._initState())
+    }  
+  }
+
+  componentWillMount() {
+    this.isInited = false
+  }
+
+  componentDidMount() {
+    this.isInited = true
   }
 
   _initState() {
@@ -26,15 +41,7 @@ export default class FormProvider extends Component {
         msg: undefined
       }
     })
-    return state;  
-  }
-
-  componentWillMount() {
-    this.isInited = false
-  }
-
-  componentDidMount() {
-    this.isInited = true
+    return state;
   }
 
   _initCallbacks() {
@@ -96,7 +103,7 @@ export default class FormProvider extends Component {
           onChange: validateField(field),
           onBlur: validateField(field),
           addValidator: addValidator(field)
-        }  
+        }
         let fieldState = {};
         fieldState[field] = {
           value: defValue || '',
@@ -106,11 +113,11 @@ export default class FormProvider extends Component {
       }
     }
     cbs.formData = getFormData
-    
+
     this.cbs = cbs;
   }
 
-  
+
 
   getProps() {
     var props = {}

@@ -18,12 +18,16 @@ This assumes that you’re using [npm](http://npmjs.com/) package manager with a
 
 ## Documentation
 There are two ways to utilize react-form-ex with your form compnent, **FormProvider** or **createForm**. In both cases, you speciffy a collection of validators, together with an optional options that determine validation behavour. For the time being, there are two valid options available *stopOnErr*, by default, it's **_TRUE_**, *implicitRequired*, by default it's  **_TRUE_**
-	
-	@field stopOnErr            flag designating if the validating process should stop when the first validating error appears
-	@field implicityRequired    flag designating if a field is mandatory if a validator is provided
 
-	implicitRequired is set TRUE by default, which means that as long as a form filed is provided with validators, it is considered as a mandatory field implicityly. If it is set as FALSE, all mandatory form fields SHOULD be explicitly provided a isRequired validator together with other validators. Otherwise all validators associated with a form field won't be validated  until this form field is typed a value
-  	
+	
+@field stopOnErr            flag designating if the validating process should stop when the first validating error appears
+
+@field implicitRequired    flag designating if a field is mandatory if a validator is provided
+
+_implicitRequired_ is set TRUE by default, which means that as long as a form filed is provided with validators,   it is considered as a mandatory field implicityly.   If it is set as FALSE, all mandatory form fields SHOULD be explicitly provided a isRequired   validator together with other validators. Otherwise all validators associated   with a form field won't be validated  until this form field is typed a value
+
+Besides the option, you can also send in _lang_ property reflecting your currently selected language on your web UI. When this property is changed, it will result in all existing validation error messages are reset
+
 
 1. [**FormProvider**] The React container component, *FormProvider* wraps your form component
   ```javascript
