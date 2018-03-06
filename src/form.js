@@ -21,7 +21,16 @@ export default class FormProvider extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.lang != nextProps.lang) {
       this.validators = createValidators(nextProps.validators);
-      this.setState(this._initState())
+      let state = {}, curState = this.state
+      this.fields.forEach( field => {
+        if (curState[field].msg) {
+          let value = curState[field].value
+          let msg = this.validators.validateField(field, value, { ...this.options, contextFields: this.cbs.formData() }) || undefined;
+
+          state[field] = { value, msg }
+        }
+      })
+      this.setState({ ...this.state, ...state })
     }  
   }
 
@@ -122,14 +131,15 @@ export default class FormProvider extends Component {
   getProps() {
     var props = {}
     this.fields.forEach( field => {
-      props[field] = Object.assign({}, this.cbs[field], {
-        value: this.state[field].value || '',
-        valid: this.state[field].msg === undefined,
-        invalid: this.state[field].msg !== undefined,
-        msg: this.state[field].msg
-      })
+      props[field] = {
+          ...this.cbs[field],
+          value: this.state[field].value || '',
+          valid: this.state[field].msg === undefined,
+          invalid: this.state[field].msg !== undefined,
+          msg: this.state[field].msg
+      }
     })
-    return Object.assign({},  this.cbs, props)
+    return { ...this.cbs, ...props}
   }
 
   render() {

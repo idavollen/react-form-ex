@@ -26,7 +26,7 @@ There are two ways to utilize react-form-ex with your form compnent, **FormProvi
 
 _implicitRequired_ is set TRUE by default, which means that as long as a form filed is provided with validators,   it is considered as a mandatory field implicityly.   If it is set as FALSE, all mandatory form fields SHOULD be explicitly provided a isRequired   validator together with other validators. Otherwise all validators associated   with a form field won't be validated  until this form field is typed a value
 
-Besides the option, you can also send in _lang_ property reflecting your currently selected language on your web UI. When this property is changed, it will result in all existing validation error messages are reset
+Besides the option, you can also send in _lang_ property reflecting your currently selected language on your web UI. When this property is changed, it will result in all existing validation error messages are oppdated with accordance to the new language
 
 
 1. [**FormProvider**] The React container component, *FormProvider* wraps your form component
