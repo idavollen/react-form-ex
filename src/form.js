@@ -1,5 +1,6 @@
 import createValidators from 'simple-form-validator';
-import React, { Component, PropTypes, Children } from 'react';
+import React, { Component, Children } from 'react';
+import PropTypes from 'prop-types';
 
 export default class FormProvider extends Component {
   getChildContext() {
@@ -8,6 +9,7 @@ export default class FormProvider extends Component {
 
   constructor(props, context) {
     super(props, context);
+    this.isInited = false
     this.validators = createValidators(props.validators);
     // stop-validating-on-error, which means no validating any more after the first validating error rises up
     // implicitRequired, by default true, all validators exception isRequired doesn't require an defined, valid value before validating
@@ -18,7 +20,7 @@ export default class FormProvider extends Component {
     this._initCallbacks();
   }
 
-  componentWillReceiveProps(nextProps) {
+  getDerivedStateFromProps(nextProps, prevState) {
     if (this.props.lang != nextProps.lang) {
       this.validators = createValidators(nextProps.validators);
       let state = {}, curState = this.state
@@ -30,12 +32,9 @@ export default class FormProvider extends Component {
           state[field] = { value, msg }
         }
       })
-      this.setState({ ...this.state, ...state })
-    }  
-  }
-
-  componentWillMount() {
-    this.isInited = false
+      return { ...this.state, ...state }
+    } else
+      return null
   }
 
   componentDidMount() {

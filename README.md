@@ -40,7 +40,7 @@ Besides the option, you can also send in _lang_ property reflecting your current
 
 		  return (
 		    <section><h3>Kontakt oss</h3>
-		      Vennligst oppfyll Kontaktskjemaet under og vi skal kontakte deg så snart som mulig
+		      Please fill in the contact form below, and we will contact you as soon as possible.
 		      <FormProvider validators={validators} options={ { stopOnErr: true, implicitRequired: false } } >
 		        <ContactForm />
 		      </FormProvider>

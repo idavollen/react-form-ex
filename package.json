@@ -1,6 +1,6 @@
 {
   "name": "react-form-ex",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "a simple react-form that uses simple-form-validator for validating form fields",
   "main": "./lib/index.js",
   "scripts": {
@@ -50,11 +50,17 @@
     "mocha": "^2.4.5",
     "chai": "^3.5.0",
     "rimraf": "^2.3.4",
-    "webpack": "^1.11.0"
+    "webpack": "^1.11.0",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "prop-types": "^15.7.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "prop-types": "^15.7.2"
   },
   "dependencies": {
-    "react": "^15.0.1",
-    "react-dom": "^15.0.0",
     "simple-form-validator": "^1.1.0"
   },
   "browserify": {
