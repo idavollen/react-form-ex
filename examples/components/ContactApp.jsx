@@ -7,7 +7,7 @@ import {  builtinValidators as Validators } from 'simple-form-validator';
 console.log('ReactForm = ', FormProvider, createForm);
 const ContactApp = () => {
   const validators = {
-    'fullname': [Validators.isString('name should be at least 3 letters')],
+    'fullname': [Validators.length('name should be at least 3 letters', 3, 15)],
     'fullname2': [Validators.isRequired('name can not be empty'), Validators.isSame('should have the same value as fullname', 'fullname')],
     'age': [Validators.isNumber('age should be only digits'), Validators.range('age should be between 1 and 150', 1, 150)],
     'income': [Validators.isRequired('income should be provided')]

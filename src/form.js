@@ -20,7 +20,8 @@ export default class FormProvider extends Component {
     this._initCallbacks();
   }
 
-  getDerivedStateFromProps(nextProps, prevState) {
+  
+  shouldComponentUpdate(nextProps, nextState) {
     if (this.props.lang != nextProps.lang) {
       this.validators = createValidators(nextProps.validators);
       let state = {}, curState = this.state
@@ -28,13 +29,11 @@ export default class FormProvider extends Component {
         if (curState[field].msg) {
           let value = curState[field].value
           let msg = this.validators.validateField(field, value, { ...this.options, contextFields: this.cbs.formData() }) || undefined;
-
           state[field] = { value, msg }
         }
-      })
-      return { ...this.state, ...state }
-    } else
-      return null
+      })      
+    }
+    return true
   }
 
   componentDidMount() {

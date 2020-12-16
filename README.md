@@ -33,7 +33,7 @@ Besides the option, you can also send in _lang_ property reflecting your current
   ```javascript
 		const ContactApp = () => {
 		  const validators = {
-		    'fullname': [Validators.isRequired('name can not be empty'), Validators.length(3, 'name should be at least 3 letters')],
+		    'fullname': [Validators.isRequired('name can not be empty'), Validators.length('name should be at least 3 letters', 3, 20)],
 		    'age': [Validators.isNumber('age should be only digits'), Validators.range('age should be between 1 and 150', 1, 150)],
 		    'income': [Validators.isNumber('income should be digits')]
 		  }
@@ -53,7 +53,7 @@ Besides the option, you can also send in _lang_ property reflecting your current
   ```javascript
 		const ContactApp = () => {
 		  const validators = {
-		    'fullname': [Validators.isRequired('name can not be empty'), Validators.length(3, 'name should be at least 3 letters')],
+		    'fullname': [Validators.isRequired('name can not be empty'), Validators.length('name should be at least 3 letters', 3, 20)],
 		    'age': [Validators.isNumber('age should be only digits'), Validators.range('age should be between 1 and 150', 1, 150)],
 		    'income': [Validators.isNumber('income should be digits')]
 		  }
